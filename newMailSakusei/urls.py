@@ -16,14 +16,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.urls import path, include
+from polls import views as polls_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('/', '../index.html'),
+
     # add index.html
-    # path('index/', '../index.html'),
+    path('', polls_views.index, name='index'),
+    path('reply/', polls_views.reply, name='reply'),
+    path('privacy_policy/', polls_views.privacy_policy, name='privacy_policy'),
     # add index.html using include
 
+    # handle /api/generate post
+    path('api/generate', polls_views.generate_email, name='generate_email'),
+    path('api/add_emoji', polls_views.add_emoji, name='add_emoji'),
+    path('api/more_polite', polls_views.more_polite, name='more_polite'),
+    path('api/generateReply', polls_views.generate_reply, name='generate_reply'),
+
     # fix TypeError: view must be a callable or a list/tuple in the case of include()
-    path('index/', include('index.urls')),
+
 ]

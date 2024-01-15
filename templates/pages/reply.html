@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,9 +15,9 @@
 <header class="bg-primary text-white text-center py-2 rounded d-flex flex-column align-items-center">
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="../index.html">
+            <a class="navbar-brand" href="/">
                 <span>
-                    <img src="../icons/emai_generator_jp_icon60x60.png" alt="My Icon" class="me-2" style="height: 40px;">
+                    <img src="{% static 'icons/emai_generator_jp_icon60x60.png' %}" alt="My Icon" class="me-2" style="height: 40px;">
                 </span>
                 MailSakusei
             </a>
@@ -26,10 +27,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../index.html">メール作成</a>
+                        <a class="nav-link active" aria-current="page" href="/">メール作成</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">返信作成</a>
+                        <a class="nav-link active" href="reply">返信作成</a>
                     </li>
                 </ul>
             </div>
@@ -41,9 +42,10 @@
     <!-- Content here -->
     <div class="row justify-content-center mt-5 mb-1">
         <form class="col-md-6">
+            {% csrf_token %}
             <div class="mb-3">
-                <label for="recipient" class="form-label">受信したメール</label>
-                <textarea type="text" class="form-control" id="recipient" rows="5" placeholder="受信したメールを入力してください"></textarea>
+                <label for="receivedMail" class="form-label">受信したメール</label>
+                <textarea type="text" class="form-control" id="receivedMail" rows="5" placeholder="受信したメールを入力してください"></textarea>
                 <div class="d-flex justify-content-between">
                     <div id="recCharCountWarning" class="d-none text-danger">文字数が多すぎます</div>
                     <div class="ms-auto">
@@ -52,6 +54,7 @@
                     </div>
                 </div>
             </div>
+            
             <div class="mb-3">
                 <label for="exampleTextarea" class="form-label">返信要件</label>
                 <textarea class="form-control" id="exampleTextarea" rows="5"
@@ -65,11 +68,12 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <a href="pages/privacy_policy.html" class="text-primary">プライバシーポリシー</a>
+                    <a href="/privacy_policy" class="text-primary">プライバシーポリシー</a>
                 </div>
-                <button type="submit" class="btn btn-primary" id="generate">作成</button>
+                <button type="submit" class="btn btn-primary" id="generateReply">返信作成</button>
             </div>
         </form>
+        
     </div>
     <div class="row justify-content-center my-1 d-none" id="resultOutputDiv">
         <div class="col-md-6">
@@ -81,6 +85,7 @@
         </div>
     </div>
 </div>
+
 <div class="navbar navbar-light bg-light fixed-bottom">
     <div class="container">
     <span class="navbar-text">
@@ -96,7 +101,7 @@
 <!-- Bootstrap Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-<script src="js/script.js"></script>
+<script src="{% static 'js/script.js' %}"></script>
 </body>
 
 </html>
