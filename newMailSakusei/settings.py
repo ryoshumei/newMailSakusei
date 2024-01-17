@@ -134,8 +134,8 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
-)
+]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
