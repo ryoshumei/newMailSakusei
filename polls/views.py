@@ -47,7 +47,8 @@ def index(request):
     # return render(request, 'index.html', context)
     return render(request, 'index.html')
 
-
+def customs_post(request):
+    return render(request,'./pages/customs_post.html')
 def reply(request):
     return render(request, './pages/reply.html')
 
@@ -145,3 +146,52 @@ def generate_reply(request):
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
+
+@require_http_methods(["POST"])
+def translate_to_english(request):
+    try:
+        # receive JSON data from Django
+        data = json.loads(request.body)
+        productName = data.get('productName')
+
+        # system_content
+        sys_content = f"YYou are a customs translator, and you need to translate the following product names into English. You can reply with up to 50 English letters. If it exceeds, you need to shorten the translation, removing any symbols and keeping only letters. I will provide the product names below. You only need to reply in English, and do not reply with any additional information. Your reply can only contain English, no other languages."
+        user_content = "The product name is :  " + productName
+
+        # use call_openai_api function to call OpenAI API
+        response = call_openai_api(sys_content, user_content)
+
+        # return the result as JSON
+        return JsonResponse({"englishName": response})
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
+
+@require_http_methods(["POST"])
+def fetch_hs_code(request):
+    try:
+        # receive JSON data from Django
+        data = json.loads(request.body)
+        englishName = data.get('productName')
+
+        # system_content
+        sys_content = f"You are a customs inspector, and you need to provide me with the HS Code for the product names listed below. I will provide the product names below. You only need to reply with the six-digit HS Code, and do not reply with any additional information. Reply with numbers only, no letters."
+        user_content = "The product name is :  " + englishName
+
+        # use call_openai_api function to call OpenAI API
+        response = call_openai_api(sys_content, user_content)
+
+        # return the result as JSON
+        return JsonResponse({"hsCode": response})
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
+    # if request.method == 'POST':
+    #     data = json.loads(request.body)
+    #     englishName = data.get('productName')
+    #
+    #     # 这里添加根据英文品名获取HSコード的逻辑
+    #     hsCode = "123456"  # 示例HSコード
+    #
+    #     return JsonResponse({'hsCode': hsCode})
+    # return JsonResponse({'error': 'Invalid request'}, status=400)
